@@ -120,7 +120,7 @@ def breadthFirstSearch(problem):
     queueObj.push(start)
 
     while not queueObj.isEmpty():
-        (state, path) = stack.pop()
+        (state, path) = queueObj.pop()
         if problem.isGoalState(state):
             goal = path
             break

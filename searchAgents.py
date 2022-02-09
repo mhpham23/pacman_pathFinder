@@ -10,7 +10,7 @@
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
-
+import search
 
 """
 This file contains all of the agents that can be selected to control Pacman.  To
@@ -295,18 +295,25 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        corners_state = [False, False, False, False]
-        return(self.startingPosition, corners_state)
+        ##corners_state = [False, False, False, False]
+        start_state = (self.startingPosition, [])
+        return start_state
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        """
         if False in state[1]:
             return False
         else:
             return True
+           """
+        isGoal = (len
+        (state[1]) == 4)
+        return isGoal
+
 
     def getSuccessors(self, state):
         """
@@ -330,20 +337,21 @@ class CornersProblem(search.SearchProblem):
 
             "*** YOUR CODE HERE ***"
             x, y = state[0]
-            goal_list = state[1]
+            visited_list = state[1]
             disX, disY = Actions.directionToVector(action)
             xNext, yNext = int(x + disX), int(y + disY)
             hitsWall = self.walls[xNext][yNext]
-            temp = goal_list.copy()
+            ##tempNode = (xNext, yNext)
             currentPos = (xNext, yNext)
             if not hitsWall:
+                visited_corners_list = list(visited_list)
                 if currentPos in self.corners:
-                    cornerIndex = self.corners.index(currentPos)
-                    temp[cornerIndex] = True
-                    successorState = ((currentPos, temp), action, 1)
-
-                else:
-                    successorState = ((currentPos, temp), action, 1)
+                    if currentPos not in visited_corners_list:
+                        visited_corners_list.append(currentPos)
+                new_state = (currentPos, visited_corners_list)
+                successor = (new_state, action, 1)
+                successors.append(successor)
+                    
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
@@ -499,7 +507,7 @@ def foodHeuristic(state, problem):
     for currentFood in foodGrid:
         for food_selected in foodGrid:
             if currentFood != food_selected:
-                distance = abs(currentFood[0] - food_selected[0]) + abs(currentFood[1] - foodSelected[1])
+                distance = abs(currentFood[0] - food_selected[0]) + abs(currentFood[1] - food_selected[1])
                 if (path[2] < distance):
                     path = (currentFood, food_selected, distance)
 
@@ -543,6 +551,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
+        """
         goal = []
         node_visited = []
         heap = util.PriorityQueue()
@@ -564,6 +573,8 @@ class ClosestDotSearchAgent(SearchAgent):
                     heap.push(new_state, new_cost)
 
         return goal
+        """
+        return search.uniformCostSearch(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
