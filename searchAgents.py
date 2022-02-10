@@ -11,6 +11,9 @@
 # Student side autograding was added by Brad Miller, Nick Hay, and
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 import search
+from game import Directions
+from game import Agent
+from game import Actions
 
 """
 This file contains all of the agents that can be selected to control Pacman.  To
@@ -288,6 +291,7 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        self.startingGameState = startingGameState
 
     def getStartState(self):
         """
@@ -387,6 +391,7 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
+    """
     x, y = state[0]
     corners_visited = state[1]
     corners_none = list(set(corners).difference(set(corners_visited)))
@@ -406,7 +411,20 @@ def cornersHeuristic(state, problem):
         distance = path[2] + min(dist1, dist2)
     elif len(corners_visited) == 1:
         distance = abs(x - corners_none[0][0]) + abs(y - corners_none[0][1])
-    return distance # Default to trivial solution
+    return distance # Default to trivial solution """
+    
+    position = state[0]
+    corners_visited = state[1]
+    corners_list = []
+
+    for corner in corners:
+        if not corner in corners_visited:
+            corners_list.append(corner)
+    distance_heuristic = [0]
+    for corner in corners_list:
+        distance_heuristic.append(mazeDistance(position, corner, problem.startingGameState))
+    return max(distance_heuristic)
+
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
